@@ -1,0 +1,70 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <% include ../partials/head %>
+    </head>
+    <body class="container">
+
+        <header>
+            <% include ../partials/header %>
+        </header>
+        <br>
+        <br>
+            <% include ../partials/message %>
+            <% include ../partials/upload %>
+        <main>
+            <div class="row">
+              <div class="col-sm-6 col-md-3">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Pillow case<span class="pull-right">$ 42</span></h3>
+                  </div>
+                  <div class="panel-body text-center">
+                    <img src="/img/pillow.jpg" style="width:200px; height:150px;">
+                    <hr/>
+                    <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message">Poke</button>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="thumbnail">
+                  <div class="caption">
+                    <h3>Math book</h3>
+                    <img src="/img/math_book.jpg" style="width:200px; height:150px;">
+                    <hr/>
+                    <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="thumbnail">
+                  <div class="caption">
+                    <h3>Lamp</h3>
+                    <img src="/img/lamp.jpg" style="width:200px; height:150px;">
+                    <hr/>
+                    <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <div class="thumbnail">
+                  <div class="caption">
+                    <h3>Pillow case</h3>
+                    <img src="/img/pillow.jpg" style="width:200px; height:150px;">
+                    <hr/>
+                    <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </main>
+
+        <footer>
+            <% include ../partials/footer %>
+        </footer>
+        
+    </body>
+</html>
