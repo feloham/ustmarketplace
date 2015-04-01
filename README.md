@@ -1,2 +1,2 @@
 # ustmarketplace
-a simple marketplace using node js and bootstrap
+A simple marketplace in Node JS and Bootstrap.
