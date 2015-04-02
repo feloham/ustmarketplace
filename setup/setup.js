@@ -35,11 +35,4 @@ function initialize() {
 	});
 };
 
-function removePunctuation(string) {
-  var punctRE = /[\u2000-\u206F\u2E00-\u2E7F\\'!"#\$%&\(\)\*\+,\-\.\/:;<=>\?@\[\]\^_`\{\|\}~]/g;
-  var spaceRE = /\s+/g;
-  var result = string.replace(punctRE, '').replace(spaceRE, ' ');
-  return result;
-};
-
 initialize();
