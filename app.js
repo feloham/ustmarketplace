@@ -6,15 +6,24 @@ var cookieParser = require('cookie-parser');
 var request = require('request');
 var busboy = require('connect-busboy');
 var elastic = require('elasticsearch');
+var nodemailer = require('nodemailer');
 
 var SERVER_PORT = 3000;
 var ES_PORT = ':9200';
 var HOST = 'localhost';
 var INDEX = 'ustmarketplace';
 var TYPE = 'item';
+var EMAIL_EXT = '@ust.hk';
 
 var app = express();
 var client = new elastic.Client({host: HOST + ES_PORT});
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'tommaso.girotto91@gmail.com',
+        pass: 'kamhlaba'
+    }
+});
 
 app.use(logger('dev'));
 app.set('views', __dirname + '/views/pages');
@@ -31,6 +40,7 @@ app.use(express.static(__dirname + '/public'));
 /*******************************************************************************/
 
 app.get('/', function(req, res) {
+	sendEmail('tgirotto');
 	res.render('index.ejs');
 });
 
@@ -93,6 +103,26 @@ function createItem(obj, callback) {
 	}, function (err, res) {
 		console.log(res);
 		callback(err);
+	});
+};
+
+function sendEmail(itsc) {
+	var mailOptions = {
+	    from: 'Tommaso Girotto Foo ✔ <tommaso.girotto91@gmail.com>', // sender address
+	    to: itsc + EMAIL_EXT, // list of receivers
+	    subject: 'Hello ✔', // Subject line
+	    text: 'Hello world ✔', // plaintext body
+	    html: '<b>Hello world ✔</b>' // html body
+	};
+
+	console.log(mailOptions);
+
+	transporter.sendMail(mailOptions, function(error, info){
+	    if(error)
+	    	console.log('An error occurred');
+	    else {
+	        console.log('the email was successfully sent');
+	    }
 	});
 };
 
