@@ -87,24 +87,24 @@ app.post('/upload', function(req, res) {
 	  });
 
 	req.busboy.on('file', function (fieldname, file, filename) {
-	    fstream = fs.createWriteStream(__dirname + '/public/img/' + filename);
-	    file.pipe(fstream);
-	    fstream.on('close', function () {
-	    	createItem({
-	    		name: item_name,
-	    		price: item_price,
-	    		description: item_description,
-	    		date: new Date().getTime() / 1000,
-	    		image: filename,
-	    		owner: item_owner,
-	    		active: 'true'
-	    	}, function(err) {
-	    		if(err == null)
-	    			res.redirect('/');
-	    		else
-	    			res.redirect('/error');
-	    	});
-	    });
+		createItem({
+    		name: item_name,
+    		price: item_price,
+    		description: item_description,
+    		date: new Date().getTime() / 1000,
+    		owner: item_owner,
+    		active: 'true'
+    	}, function(err, obj) {
+    		if(err == null) {
+    			fstream = fs.createWriteStream(__dirname + '/public/img/' + obj._id + '.jpg');
+			    file.pipe(fstream);
+			    fstream.on('close', function () {
+			    	res.redirect('/');
+			    });
+    		} else
+    			res.redirect('/error');
+    	});
+	    
 	});
 });
 
@@ -115,8 +115,7 @@ function createItem(obj, callback) {
 	    type: TYPE,
 	  	body: obj
 	}, function (err, res) {
-		console.log(res);
-		callback(err);
+		callback(err, res);
 	});
 };
 
