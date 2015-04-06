@@ -7,16 +7,36 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Message</h4>
       </div>
-      <form role="form" method="post" action="message">
+      <form id="message_form" role="form" action="/message">
           <div class="modal-body">
               <div class="form-group">
-                <textarea placeholder="Yo..." class="form-control" rows="5" id="message" style="width: 100%; height: 100%; border-color: Transparent; resize:none; outline: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none;"></textarea>
+                <textarea placeholder="Yo..." class="form-control" rows="5" id="poke_message" style="width: 100%; height: 100%; border-color: Transparent; resize:none; outline: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none;" name="poke_message"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="author_itsc">ITSC</label>
+                <input id="author_itsc" type="text" class="form-control" name="author_itsc">
               </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Send</button>
+            <button type="submit" class="btn btn-primary">Send</button>
           </div>
       </form>
     </div>
   </div>
 </div>
+
+<script type='text/javascript'>
+          $("#message_form").submit(function(event) {
+            event.preventDefault();
+
+            var $form = $(this),
+                url = $form.attr('action');
+
+            var posting = $.post(url, { message: $('#poke_message').val(), author_itsc: $('#author_itsc').val() } );
+
+            /* Alerts the results */
+            posting.done(function(data) {
+              console.log('Post working');
+            });
+          });
+      </script>

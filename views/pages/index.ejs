@@ -15,56 +15,77 @@
             <% include ../partials/message %>
             <% include ../partials/upload %>
         <main>
-            <div class="row">
-              <div class="col-sm-6 col-md-3">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">Pillow case<span class="pull-right">$ 42</span></h3>
+          <% for(var i = 0; i < items.length; i += 4) { %>
+            <% if(i % 4 == 0) { %>
+              <div class="row">
+              <% if(items[i] != null) { %>
+
+                  <div class="col-sm-6 col-md-3">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title"><%= items[0]._source.name%><span class="pull-right">$ <%=items[0]._source.price%></span></h3>
+                      </div>
+                      <div class="panel-body text-center">
+                        <img src='/img/<%=items[0]._source.image%>'  style="width:200px; height:150px;">
+                        <hr/>
+                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message">Poke</button>
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div class="panel-body text-center">
-                    <img src="/img/pillow.jpg" style="width:200px; height:150px;">
-                    <hr/>
-                    <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message">Poke</button>
-                    </p>
+                <% } %>
+                <% if(items[i + 1] != null) { %>
+                  <div class="col-sm-6 col-md-3">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title"><%= items[1]._source.name%><span class="pull-right">$ <%=items[1]._source.price%></span></h3>
+                      </div>
+                      <div class="panel-body text-center">
+                        <img src='/img/<%=items[1]._source.image%>' style="width:200px; height:150px;">
+                        <hr/>
+                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message">Poke</button>
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                <% } %>
+                <% if(items[i + 2] != null) { %>
+                  <div class="col-sm-6 col-md-3">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title"><%= items[2]._source.name%><span class="pull-right">$ <%=items[2]._source.price%></span></h3>
+                      </div>
+                      <div class="panel-body text-center">
+                        <img src='/img/<%=items[2]._source.image%>' style="width:200px; height:150px;">
+                        <hr/>
+                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message">Poke</button>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
+                <% if(items[i + 3] != null) { %>
+                  <div class="col-sm-6 col-md-3">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title"><%= items[3]._source.name%><span class="pull-right">$ <%=items[3]._source.price%></span></h3>
+                      </div>
+                      <div class="panel-body text-center">
+                        <img src='/img/<%=items[3]._source.image%>' style="width:200px; height:150px;">
+                        <hr/>
+                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message">Poke</button>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                <% } %>
               </div>
-              <div class="col-sm-6 col-md-3">
-                <div class="thumbnail">
-                  <div class="caption">
-                    <h3>Math book</h3>
-                    <img src="/img/math_book.jpg" style="width:200px; height:150px;">
-                    <hr/>
-                    <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-md-3">
-                <div class="thumbnail">
-                  <div class="caption">
-                    <h3>Lamp</h3>
-                    <img src="/img/lamp.jpg" style="width:200px; height:150px;">
-                    <hr/>
-                    <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-6 col-md-3">
-                <div class="thumbnail">
-                  <div class="caption">
-                    <h3>Pillow case</h3>
-                    <img src="/img/pillow.jpg" style="width:200px; height:150px;">
-                    <hr/>
-                    <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <% } %>
+          <% } %>
         </main>
 
         <footer>
             <% include ../partials/footer %>
         </footer>
-        
     </body>
 </html>

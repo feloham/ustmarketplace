@@ -40,8 +40,16 @@ app.use(express.static(__dirname + '/public'));
 /*******************************************************************************/
 
 app.get('/', function(req, res) {
-	sendEmail('tgirotto');
-	res.render('index.ejs');
+	getAllItems(function(array) {
+		if(array == null)
+			res.render('error.ejs');
+		else {
+			console.log(array);
+			res.render('index.ejs', {
+				items : array
+			});	
+		}	
+	});
 });
 
 app.get('/about', function(req, res) {
@@ -50,6 +58,12 @@ app.get('/about', function(req, res) {
 
 app.get('/error', function(req, res) {
 	res.render('error.ejs');
+});
+
+app.post('/message', function(req, res) {
+	console.log('working');
+	console.log(req.body);
+	res.json({result:"ok"});
 });
 
 app.post('/upload', function(req, res) {
@@ -115,8 +129,6 @@ function sendEmail(itsc) {
 	    html: '<b>Hello world ✔</b>' // html body
 	};
 
-	console.log(mailOptions);
-
 	transporter.sendMail(mailOptions, function(error, info){
 	    if(error)
 	    	console.log('An error occurred');
@@ -130,8 +142,24 @@ function removeItem() {
 
 };
 
-function searchItem() {
+function getAllItems(callback) {
+	var array = [];
 
+	client.search({
+		index: INDEX,
+		body: {
+	    	query: {
+	      		match_all: {}
+	    	}
+	  	}
+	}, function (err, res) {
+		if(err == null) {
+			for(var i = 0; i < res.hits.total; i++)
+				array.push(res.hits.hits[i]);
+		}
+
+		callback(array);
+	});
 };
 /*******************************************************************************/
 app.use(function(req, res, next) {
