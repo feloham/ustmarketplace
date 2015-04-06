@@ -61,9 +61,8 @@ app.get('/error', function(req, res) {
 });
 
 app.post('/message', function(req, res) {
-	console.log('working');
 	console.log(req.body);
-	res.json({result:"ok"});
+	res.send("ok");
 });
 
 app.post('/upload', function(req, res) {
@@ -98,13 +97,12 @@ app.post('/upload', function(req, res) {
     		if(err == null) {
     			fstream = fs.createWriteStream(__dirname + '/public/img/' + obj._id + '.jpg');
 			    file.pipe(fstream);
-			    fstream.on('close', function () {
+			    fstream.on('close', function() {
 			    	res.redirect('/');
 			    });
     		} else
     			res.redirect('/error');
-    	});
-	    
+    	}); 
 	});
 });
 
@@ -121,19 +119,18 @@ function createItem(obj, callback) {
 
 function sendEmail(itsc) {
 	var mailOptions = {
-	    from: 'Tommaso Girotto Foo ✔ <tommaso.girotto91@gmail.com>', // sender address
+	    from: 'ustmarketplace <tommaso.girotto91@gmail.com>', // sender address
 	    to: itsc + EMAIL_EXT, // list of receivers
-	    subject: 'Hello ✔', // Subject line
-	    text: 'Hello world ✔', // plaintext body
+	    subject: '✔ Someone\'s interested in your post!', // Subject line
+	    text: 'Hey! User XXX is poking you about item YYY', // plaintext body
 	    html: '<b>Hello world ✔</b>' // html body
 	};
 
 	transporter.sendMail(mailOptions, function(error, info){
 	    if(error)
 	    	console.log('An error occurred');
-	    else {
-	        console.log('the email was successfully sent');
-	    }
+	    else
+	        console.log('The email was successfully sent');
 	});
 };
 
@@ -160,6 +157,7 @@ function getAllItems(callback) {
 		callback(array);
 	});
 };
+
 /*******************************************************************************/
 app.use(function(req, res, next) {
     var err = new Error('Not Found');

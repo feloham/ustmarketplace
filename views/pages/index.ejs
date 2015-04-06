@@ -12,8 +12,8 @@
         </header>
         <br>
         <br>
-            <% include ../partials/message %>
             <% include ../partials/upload %>
+            <% include ../partials/message %>
         <main>
           <% for(var i = 0; i < items.length; i += 4) { %>
             <% if(i % 4 == 0) { %>
@@ -27,11 +27,12 @@
                       <div class="panel-body text-center">
                         <img src='/img/<%=items[0]._id%>.jpg'  style="width:200px; height:150px;">
                         <hr/>
-                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message">Poke</button>
+                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message" data-id='<%=items[0]._id%>'>Poke</button>
                         </p>
                       </div>
                     </div>
                   </div>
+
                 <% } %>
                 <% if(items[i + 1] != null) { %>
                   <div class="col-sm-6 col-md-3">
@@ -42,11 +43,12 @@
                       <div class="panel-body text-center">
                         <img src='/img/<%=items[1]._id%>.jpg' style="width:200px; height:150px;">
                         <hr/>
-                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message">Poke</button>
+                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message" data-id='<%=items[1]._id%>'>Poke</button>
                         </p>
                       </div>
                     </div>
                   </div>
+
                 <% } %>
                 <% if(items[i + 2] != null) { %>
                   <div class="col-sm-6 col-md-3">
@@ -57,11 +59,12 @@
                       <div class="panel-body text-center">
                         <img src='/img/<%=items[2]._id%>.jpg' style="width:200px; height:150px;">
                         <hr/>
-                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message">Poke</button>
+                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message" data-id='<%=items[2]._id%>'>Poke</button>
                         </p>
                       </div>
                     </div>
                   </div>
+
                 <% } %>
                 <% if(items[i + 3] != null) { %>
                   <div class="col-sm-6 col-md-3">
@@ -72,11 +75,12 @@
                       <div class="panel-body text-center">
                         <img src='/img/<%=items[3]._id%>.jpg' style="width:200px; height:150px;">
                         <hr/>
-                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message">Poke</button>
+                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message" data-id='<%=items[3]._id%>'>Poke</button>
                         </p>
                       </div>
                     </div>
                   </div>
+
                 <% } %>
               </div>
             <% } %>

@@ -26,17 +26,27 @@
 </div>
 
 <script type='text/javascript'>
-          $("#message_form").submit(function(event) {
-            event.preventDefault();
+  $('#message').on('show.bs.modal', function(e) {
+      //get data-id attribute of the clicked element
+      var bookId = $(e.relatedTarget).data('id');
 
-            var $form = $(this),
-                url = $form.attr('action');
+      console.log(bookId);
 
-            var posting = $.post(url, { message: $('#poke_message').val(), author_itsc: $('#author_itsc').val() } );
+      //populate the textbox
+      //$(e.currentTarget).find('input[name="bookId"]').val(bookId);
+  });
 
-            /* Alerts the results */
-            posting.done(function(data) {
-              console.log('Post working');
-            });
-          });
-      </script>
+  $("#message_form").submit(function(event) {
+    event.preventDefault();
+
+    var $form = $(this),
+        url = $form.attr('action');
+
+    var posting = $.post(url, { message: $('#poke_message').val(), author_itsc: $('#author_itsc').val() } );
+
+    /* Alerts the results */
+    posting.done(function(data) {
+      console.log('Post working');
+    });
+  });
+</script>
