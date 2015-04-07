@@ -64,7 +64,7 @@ app.post('/message', function(req, res) {
 	getItemById(req.body.item_id, function(item) {
 		console.log('item: ', item);
 		sendEmail(req.body, item, function() {
-			console.log('Email sent');
+			res.json({data : 'ok'});
 		});
 	});
 });
@@ -140,7 +140,7 @@ function sendEmail(post, item, callback) {
 	    	  '<p>' + post.author_itsc + ' writes:</p>' +
 	    	  '<p>' + post.message + '</p>' +
 	    	  '<br>' +
-	    	  '<p>To reply, send an email to: ' + post.author_itsc + EMAIL_EXT + '</p>' +
+	    	  '<p>To reply, send an email to: <a href="mailto:' + post.author_itsc + EMAIL_EXT + '">' + post.author_itsc + EMAIL_EXT + '</a></p>' +
 	    	  '<br>' +
 	    	  '<p><a href="http://143.89.228.80:3000/sold?item_id=' + item._id + '">I have sold this item</a></p>' +
 	    	  '<br>'

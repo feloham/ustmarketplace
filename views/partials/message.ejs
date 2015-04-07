@@ -10,11 +10,10 @@
       <form id="message_form" role="form" action="/message">
           <div class="modal-body">
               <div class="form-group">
-                <textarea placeholder="Yo..." class="form-control" rows="5" id="poke_message" style="width: 100%; height: 100%; border-color: Transparent; resize:none; outline: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none;" name="poke_message"></textarea>
+                <textarea placeholder="Message..." class="form-control" rows="5" id="poke_message" style="width: 100%; height: 100%; border-color: Transparent; resize:none; outline: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none;" name="poke_message"></textarea>
               </div>
               <div class="form-group">
-                <label for="author_itsc">ITSC</label>
-                <input id="author_itsc" type="text" class="form-control" name="author_itsc">
+                <input placeholder="ITSC..." id="author_itsc" type="text" class="form-control" name="author_itsc" style="width: 100%; height: 100%; border-color: Transparent; resize:none; outline: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none;">
               </div>
           </div>
           <div class="modal-footer">
@@ -44,11 +43,14 @@
     var $form = $(this),
         url = $form.attr('action');
 
-    var posting = $.post(url, { message: $('#poke_message').val(), author_itsc: $('#author_itsc').val(), item_id :  $('#item_id').val()} );
+    var posting = $.post(url, { 
+      message: $('#poke_message').val(), 
+      author_itsc: $('#author_itsc').val(), 
+      item_id :  $('#item_id').val()
+    } );
 
-    /* Alerts the results */
     posting.done(function(data) {
-      console.log('Post working');
+      console.log(data);
     });
   });
 </script>
