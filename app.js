@@ -110,6 +110,11 @@ app.post('/upload', function(req, res) {
 	});
 });
 
+app.get('/sold', function(req, res) {
+	console.log(req.query);
+	//res.render('');
+});
+
 /*******************************************************************************/
 function createItem(obj, callback) {
 	client.create({
@@ -127,7 +132,18 @@ function sendEmail(post, item, callback) {
 	    from: 'ustmarketplace <tommaso.girotto91@gmail.com>', // sender address
 	    to: item._source.owner + EMAIL_EXT, // list of receivers
 	    subject: '✔ Someone\'s interested in your post!', // Subject line
-	    text: post.message
+	    html: '<p>This email is about:</p>' +
+	    	  '<p>Item name: ' + item._source.name + '</p>' +
+	    	  '<p>Item description:' + item._source.description + '</p>' +
+	    	  '<p>Item price: ' + item._source.price + '</p>' +
+	    	  '<br>' +
+	    	  '<p>' + post.author_itsc + ' writes:</p>' +
+	    	  '<p>' + post.message + '</p>' +
+	    	  '<br>' +
+	    	  '<p>To reply, send an email to: ' + post.author_itsc + EMAIL_EXT + '</p>' +
+	    	  '<br>' +
+	    	  '<p><a href="http://143.89.228.80:3000/sold?item_id=' + item._id + '">I have sold this item</a></p>' +
+	    	  '<br>'
 	};
 
 	transporter.sendMail(mailOptions, function(error, info) {
