@@ -28,12 +28,14 @@
 <script type='text/javascript'>
   $('#message').on('show.bs.modal', function(e) {
       //get data-id attribute of the clicked element
-      var bookId = $(e.relatedTarget).data('id');
 
-      console.log(bookId);
+      var item_id = document.createElement('input');
+      item_id.setAttribute('id', 'item_id');
+      item_id.setAttribute('type', 'hidden');
+      item_id.setAttribute('name', 'item_id');
+      item_id.setAttribute('value', $(e.relatedTarget).data('id'));
 
-      //populate the textbox
-      //$(e.currentTarget).find('input[name="bookId"]').val(bookId);
+      document.getElementById('message_form').appendChild(item_id);
   });
 
   $("#message_form").submit(function(event) {
@@ -42,7 +44,7 @@
     var $form = $(this),
         url = $form.attr('action');
 
-    var posting = $.post(url, { message: $('#poke_message').val(), author_itsc: $('#author_itsc').val() } );
+    var posting = $.post(url, { message: $('#poke_message').val(), author_itsc: $('#author_itsc').val(), item_id :  $('#item_id').val()} );
 
     /* Alerts the results */
     posting.done(function(data) {

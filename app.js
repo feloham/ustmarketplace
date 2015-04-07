@@ -61,8 +61,12 @@ app.get('/error', function(req, res) {
 });
 
 app.post('/message', function(req, res) {
-	console.log(req.body);
-	res.send("ok");
+	getItemById(req.body.item_id, function(item) {
+		console.log('item: ', item);
+		sendEmail(req.body, item, function() {
+			console.log('Email sent');
+		});
+	});
 });
 
 app.post('/upload', function(req, res) {
@@ -117,20 +121,20 @@ function createItem(obj, callback) {
 	});
 };
 
-function sendEmail(itsc) {
+function sendEmail(post, item, callback) {
+	console.log(item._source.owner);
 	var mailOptions = {
 	    from: 'ustmarketplace <tommaso.girotto91@gmail.com>', // sender address
-	    to: itsc + EMAIL_EXT, // list of receivers
+	    to: item._source.owner + EMAIL_EXT, // list of receivers
 	    subject: '✔ Someone\'s interested in your post!', // Subject line
-	    text: 'Hey! User XXX is poking you about item YYY', // plaintext body
-	    html: '<b>Hello world ✔</b>' // html body
+	    text: post.message
 	};
 
-	transporter.sendMail(mailOptions, function(error, info){
+	transporter.sendMail(mailOptions, function(error, info) {
 	    if(error)
 	    	console.log('An error occurred');
 	    else
-	        console.log('The email was successfully sent');
+	    	callback();
 	});
 };
 
@@ -155,6 +159,26 @@ function getAllItems(callback) {
 		}
 
 		callback(array);
+	});
+};
+
+function getItemById(id, callback) {
+	console.log('id: ', id);
+	client.search({
+		index: INDEX,
+		body: {
+			query: { ids: 
+				{ values: [ id ] 
+				} 
+			} 
+		}
+	}, function(err, res) {
+		if(err != null)
+			console.log('an error occurred');
+		else {
+			console.log(res);
+			callback(res.hits.hits[0]);
+		}
 	});
 };
 
