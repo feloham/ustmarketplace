@@ -94,7 +94,7 @@ app.post('/upload', function(req, res) {
     		name: item_name,
     		price: item_price,
     		description: item_description,
-    		date: new Date().getTime() / 1000,
+    		date: Math.floor(new Date().getTime() / 1000),
     		owner: item_owner,
     		active: 'true'
     	}, function(err, obj) {
@@ -117,7 +117,6 @@ app.get('/withdraw', function(req, res) {
 	  type: TYPE,
 	  id: req.query._id,
 	  body: {
-	    // put the partial document under the `doc` key
 	    doc: {
 	      active: 'false'
 	    }
@@ -175,16 +174,40 @@ function removeItem() {
 
 function getAllItems(callback) {
 	var array = [];
+	var end = Math.floor(new Date().getTime() / 1000);
+	var start = end - 2592000;
 
 	client.search({
 		index: INDEX,
 		body: {
 	    	query: {
-	      		match_all: {}
-	    	}
+		        filtered: {
+		            query: {
+		                match_all: {}
+		            },
+		            filter: {
+		                and: [
+		                    {
+		                        range : {
+		                            date : { 
+		                                from : start, 
+		                                to : end
+		                            }
+		                        },
+		                    },
+		                    {
+		                        term: {
+		                            active: 'true'
+		                        }
+		                    }
+		                ]
+		            }
+		        }
+		    }
 	  	}
 	}, function (err, res) {
 		if(err == null) {
+			console.log(res);
 			for(var i = 0; i < res.hits.total; i++)
 				array.push(res.hits.hits[i]);
 		}
