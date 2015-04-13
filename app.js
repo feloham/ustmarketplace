@@ -105,14 +105,29 @@ app.post('/upload', function(req, res) {
 			    	res.redirect('/');
 			    });
     		} else
-    			res.redirect('/error');
+    			res.render('error.ejs');
     	}); 
 	});
 });
 
-app.get('/sold', function(req, res) {
+app.get('/withdraw', function(req, res) {
 	console.log(req.query);
-	//res.render('');
+	client.update({
+	  index: INDEX,
+	  type: TYPE,
+	  id: req.query._id,
+	  body: {
+	    // put the partial document under the `doc` key
+	    doc: {
+	      active: 'false'
+	    }
+	  }
+	}, function (error, response) {
+		if(error != null)
+			res.render('error.ejs');
+		else
+			res.render('withdraw.ejs');
+	})
 });
 
 /*******************************************************************************/
@@ -132,7 +147,7 @@ function sendEmail(post, item, callback) {
 	    from: 'ustmarketplace <tommaso.girotto91@gmail.com>', // sender address
 	    to: item._source.owner + EMAIL_EXT, // list of receivers
 	    subject: '✔ Someone\'s interested in your post!', // Subject line
-	    html: '<p>This email is about:</p>' +
+	    html: '<p>Hey, someone would like to know more about:</p>' +
 	    	  '<p>Item name: ' + item._source.name + '</p>' +
 	    	  '<p>Item description:' + item._source.description + '</p>' +
 	    	  '<p>Item price: ' + item._source.price + '</p>' +
@@ -142,7 +157,7 @@ function sendEmail(post, item, callback) {
 	    	  '<br>' +
 	    	  '<p>To reply, send an email to: <a href="mailto:' + post.author_itsc + EMAIL_EXT + '">' + post.author_itsc + EMAIL_EXT + '</a></p>' +
 	    	  '<br>' +
-	    	  '<p><a href="http://143.89.228.80:3000/sold?item_id=' + item._id + '">I have sold this item</a></p>' +
+	    	  '<p><a href="http://143.89.227.220:3000/withdraw?_id=' + item._id + '">Withdraw item from marketplace</a></p>' +
 	    	  '<br>'
 	};
 
