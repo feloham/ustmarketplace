@@ -11,6 +11,7 @@ var nodemailer = require('nodemailer');
 var SERVER_PORT = 3000;
 var ES_PORT = ':9200';
 var HOST = 'localhost';
+var IP = '143.89.227.220';
 var INDEX = 'ustmarketplace';
 var TYPE = 'item';
 var EMAIL_EXT = '@ust.hk';
@@ -63,7 +64,7 @@ app.get('/error', function(req, res) {
 app.post('/message', function(req, res) {
 	getItemById(req.body.item_id, function(item) {
 		console.log('item: ', item);
-		sendEmail(req.body, item, function() {
+		sendMessageEmail(req.body, item, function() {
 			res.json({data : 'ok'});
 		});
 	});
@@ -102,7 +103,11 @@ app.post('/upload', function(req, res) {
     			fstream = fs.createWriteStream(__dirname + '/public/img/' + obj._id + '.jpg');
 			    file.pipe(fstream);
 			    fstream.on('close', function() {
-			    	res.redirect('/');
+			    	getItemById(obj._id, function(obj) {
+			    		sendUploadEmail(obj, function() {
+				    		res.redirect('/');
+				    	});
+			    	});
 			    });
     		} else
     			res.render('error.ejs');
@@ -140,8 +145,31 @@ function createItem(obj, callback) {
 	});
 };
 
-function sendEmail(post, item, callback) {
-	console.log(item._source.owner);
+
+function sendUploadEmail(item, callback) {
+	console.log(item);
+	var mailOptions = {
+	    from: 'ustmarketplace <tommaso.girotto91@gmail.com>', // sender address
+	    to: item._source.owner + EMAIL_EXT, // list of receivers
+	    subject: '✔ Someone\'s interested in your post!', // Subject line
+	    html: '<p>Hey, just letting you know that you successfully posted the following item:</p>' +
+	    	  '<p>Item name: ' + item._source.name + '</p>' +
+	    	  '<p>Item description:' + item._source.description + '</p>' +
+	    	  '<p>Item price: ' + item._source.price + '</p>' +
+	    	  '<br>' +
+	    	  '<p><a href="http://' + IP + ':3000/withdraw?_id=' + item._id + '">Withdraw item from marketplace</a></p>' +
+	    	  '<br>'
+	};
+
+	transporter.sendMail(mailOptions, function(error, info) {
+	    if(error)
+	    	console.log('An error occurred');
+	    else
+	    	callback();
+	});
+};
+
+function sendMessageEmail(post, item, callback) {
 	var mailOptions = {
 	    from: 'ustmarketplace <tommaso.girotto91@gmail.com>', // sender address
 	    to: item._source.owner + EMAIL_EXT, // list of receivers
@@ -156,7 +184,7 @@ function sendEmail(post, item, callback) {
 	    	  '<br>' +
 	    	  '<p>To reply, send an email to: <a href="mailto:' + post.author_itsc + EMAIL_EXT + '">' + post.author_itsc + EMAIL_EXT + '</a></p>' +
 	    	  '<br>' +
-	    	  '<p><a href="http://143.89.227.220:3000/withdraw?_id=' + item._id + '">Withdraw item from marketplace</a></p>' +
+	    	  '<p><a href="http://' + IP + ':3000/withdraw?_id=' + item._id + '">Withdraw item from marketplace</a></p>' +
 	    	  '<br>'
 	};
 
@@ -168,16 +196,12 @@ function sendEmail(post, item, callback) {
 	});
 };
 
-function removeItem() {
-
-};
-
 function getAllItems(callback) {
 	var array = [];
 	var end = Math.floor(new Date().getTime() / 1000);
 	var start = end - 2592000;
 
-	client.search({
+	var obj = {
 		index: INDEX,
 		body: {
 	    	query: {
@@ -205,9 +229,10 @@ function getAllItems(callback) {
 		        }
 		    }
 	  	}
-	}, function (err, res) {
+	};
+
+	client.search(obj, function (err, res) {
 		if(err == null) {
-			console.log(res);
 			for(var i = 0; i < res.hits.total; i++)
 				array.push(res.hits.hits[i]);
 		}
@@ -217,22 +242,11 @@ function getAllItems(callback) {
 };
 
 function getItemById(id, callback) {
-	console.log('id: ', id);
-	client.search({
-		index: INDEX,
-		body: {
-			query: { ids: 
-				{ values: [ id ] 
-				} 
-			} 
-		}
-	}, function(err, res) {
+	request.get('http://localhost:9200/' + INDEX + '/' + TYPE + '/' + id, function(err, res, body) {
 		if(err != null)
 			console.log('an error occurred');
-		else {
-			console.log(res);
-			callback(res.hits.hits[0]);
-		}
+		else
+			callback(JSON.parse(body));
 	});
 };
 
