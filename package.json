@@ -15,7 +15,6 @@
     "morgan": "~1.5.1",
     "connect-mongo": "git+https://github.com/kcbanner/connect-mongo.git#master",
     "request" : "~2.54.0",
-    "connect-busboy" : "*",
     "elasticsearch" : "*",
     "nodemailer" : "*"
   },

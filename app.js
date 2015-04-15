@@ -2,7 +2,7 @@ var fs = require('fs');
 var express = require('express');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
+//var cookieParser = require('cookie-parser');
 var request = require('request');
 var busboy = require('connect-busboy');
 var elastic = require('elasticsearch');
@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use( require('cookie-parser')() );
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(busboy());
+//app.use(busboy());
 app.set('port', (process.env.PORT || SERVER_PORT));
 app.use(express.static(__dirname + '/public'));
 
@@ -76,7 +76,7 @@ app.post('/upload', function(req, res) {
 		item_price,
 		item_image;
 
-	req.pipe(req.busboy);
+	/*req.pipe(req.busboy);
 	req.busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
 	    if(fieldname == 'item_name')
 	     	item_name = val;
@@ -112,7 +112,7 @@ app.post('/upload', function(req, res) {
     		} else
     			res.render('error.ejs');
     	}); 
-	});
+	});*/
 });
 
 app.get('/withdraw', function(req, res) {
