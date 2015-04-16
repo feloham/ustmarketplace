@@ -54,7 +54,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/about', function(req, res) {
-	res.render('');
+	res.render('about.ejs');
 });
 
 app.get('/error', function(req, res) {
@@ -149,7 +149,7 @@ function createItem(obj, callback) {
 function sendUploadEmail(item, callback) {
 	console.log(item);
 	var mailOptions = {
-	    from: 'ust marketplace <ustmarketplace@gmail.com>', // sender address
+	    from: 'UST marketplace <ustmarketplace@gmail.com>', // sender address
 	    to: item._source.owner + EMAIL_EXT, // list of receivers
 	    subject: '✔ Someone\'s interested in your post!', // Subject line
 	    html: '<p>Hey, just letting you know that you successfully posted the following item:</p>' +
@@ -182,7 +182,7 @@ function sendMessageEmail(post, item, callback) {
 	    	  '<p>Item price: ' + item._source.price + '</p>' +
 	    	  '<br>' +
 	    	  '<p>' + post.author_itsc + ' writes:</p>' +
-	    	  '<p>' + post.message + '</p>' +
+	    	  '<p>' + post.content + '</p>' +
 	    	  '<br>' +
 	    	  '<p>To reply, send an email to: <a href="mailto:' + post.author_itsc + EMAIL_EXT + '">' + post.author_itsc + EMAIL_EXT + '</a></p>' +
 	    	  '<br>' +

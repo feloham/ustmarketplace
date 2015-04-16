@@ -1,0 +1,33 @@
+<!-- views/pages/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <% include ../partials/head %>
+    </head>
+    <body class="container">
+
+        <header>
+            <% include ../partials/header %>
+        </header>
+        <br>
+        <br>
+            <% include ../partials/upload %>
+            <% include ../partials/message %>
+        <main>
+          <div class="jumbotron">
+            <h1>UST marketplace</h1>
+            <p>At UST marketplace, you can sell the objects you want to get rid of in 3 easy steps:</p>
+            <ul>
+              <li>Click the "Upload" button</li>
+              <li>Fill in and submit the form about the item you would like to sell</li>
+              <li>Check your @ust.hk email account for the confirmation email about your post</li>
+            </ul>
+          </div>
+        </main>
+
+        <footer>
+            <% include ../partials/footer %>
+        </footer>
+    </body>
+</html>
