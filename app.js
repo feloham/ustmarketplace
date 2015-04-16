@@ -2,7 +2,7 @@ var fs = require('fs');
 var express = require('express');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-//var cookieParser = require('cookie-parser');
+var cookieParser = require('cookie-parser');
 var request = require('request');
 var busboy = require('connect-busboy');
 var elastic = require('elasticsearch');
@@ -11,7 +11,7 @@ var nodemailer = require('nodemailer');
 var SERVER_PORT = 3000;
 var ES_PORT = ':9200';
 var HOST = 'localhost';
-var IP = '143.89.231.52';
+var IP = 'ustmarketplace.ddns.net';
 var INDEX = 'ustmarketplace';
 var TYPE = 'item';
 var EMAIL_EXT = '@ust.hk';
@@ -21,7 +21,7 @@ var client = new elastic.Client({host: HOST + ES_PORT});
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'tommaso.girotto91@gmail.com',
+        user: 'ustmarketplace@gmail.com',
         pass: 'kamhlaba'
     }
 });
@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use( require('cookie-parser')() );
 app.use(bodyParser.json());
 app.use(cookieParser());
-//app.use(busboy());
+app.use(busboy());
 app.set('port', (process.env.PORT || SERVER_PORT));
 app.use(express.static(__dirname + '/public'));
 
@@ -76,7 +76,7 @@ app.post('/upload', function(req, res) {
 		item_price,
 		item_image;
 
-	/*req.pipe(req.busboy);
+	req.pipe(req.busboy);
 	req.busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated) {
 	    if(fieldname == 'item_name')
 	     	item_name = val;
@@ -112,7 +112,7 @@ app.post('/upload', function(req, res) {
     		} else
     			res.render('error.ejs');
     	}); 
-	});*/
+	});
 });
 
 app.get('/withdraw', function(req, res) {
@@ -149,7 +149,7 @@ function createItem(obj, callback) {
 function sendUploadEmail(item, callback) {
 	console.log(item);
 	var mailOptions = {
-	    from: 'ustmarketplace <tommaso.girotto91@gmail.com>', // sender address
+	    from: 'ust marketplace <ustmarketplace@gmail.com>', // sender address
 	    to: item._source.owner + EMAIL_EXT, // list of receivers
 	    subject: '✔ Someone\'s interested in your post!', // Subject line
 	    html: '<p>Hey, just letting you know that you successfully posted the following item:</p>' +
@@ -162,8 +162,10 @@ function sendUploadEmail(item, callback) {
 	};
 
 	transporter.sendMail(mailOptions, function(error, info) {
-	    if(error)
+	    if(error) {
+	    	console.log('tommaso, error occurred here');
 	    	console.log('An error occurred');
+	    }
 	    else
 	    	callback();
 	});
