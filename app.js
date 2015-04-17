@@ -151,7 +151,7 @@ function sendUploadEmail(item, callback) {
 	var mailOptions = {
 	    from: 'UST marketplace <ustmarketplace@gmail.com>', // sender address
 	    to: item._source.owner + EMAIL_EXT, // list of receivers
-	    subject: '✔ Someone\'s interested in your post!', // Subject line
+	    subject: '✔ You successfully posted an item!', // Subject line
 	    html: '<p>Hey, just letting you know that you successfully posted the following item:</p>' +
 	    	  '<p>Item name: ' + item._source.name + '</p>' +
 	    	  '<p>Item description:' + item._source.description + '</p>' +
