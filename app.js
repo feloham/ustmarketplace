@@ -66,12 +66,15 @@ app.get('/error', function(req, res) {
 });
 
 app.post('/message', function(req, res) {
-	getItemById(req.body.item_id, function(item) {
-		console.log('item: ', item);
-		sendMessageEmail(req.body, item, function() {
-			res.json({data : 'ok'});
+	if(authorise(req.body.author_itsc)) {
+		getItemById(req.body.item_id, function(item) {
+			console.log('item: ', item);
+			sendMessageEmail(req.body, item, function() {
+				res.json({data : 'ok'});
+			});
 		});
-	});
+	} else
+		res.render('error.ejs');
 });
 
 app.post('/upload', function(req, res) {
@@ -95,27 +98,30 @@ app.post('/upload', function(req, res) {
 	  });
 
 	req.busboy.on('file', function (fieldname, file, filename) {
-		createItem({
-    		name: item_name,
-    		price: item_price,
-    		description: item_description,
-    		date: Math.floor(new Date().getTime() / 1000),
-    		owner: item_owner,
-    		active: 'true'
-    	}, function(err, obj) {
-    		if(err == null) {
-    			fstream = fs.createWriteStream(__dirname + '/public/img/' + obj._id + '.jpg');
-			    file.pipe(fstream);
-			    fstream.on('close', function() {
-			    	getItemById(obj._id, function(obj) {
-			    		sendUploadEmail(obj, function() {
-				    		res.redirect('/');
+		if(authorise(item_owner)) {
+			createItem({
+	    		name: item_name,
+	    		price: item_price,
+	    		description: item_description,
+	    		date: Math.floor(new Date().getTime() / 1000),
+	    		owner: item_owner,
+	    		active: 'true'
+	    	}, function(err, obj) {
+	    		if(err == null) {
+	    			fstream = fs.createWriteStream(__dirname + '/public/img/' + obj._id + '.jpg');
+				    file.pipe(fstream);
+				    fstream.on('close', function() {
+				    	getItemById(obj._id, function(obj) {
+				    		sendUploadEmail(obj, function() {
+					    		res.redirect('/');
+					    	});
 				    	});
-			    	});
-			    });
-    		} else
-    			res.render('error.ejs');
-    	}); 
+				    });
+	    		} else
+	    			res.render('error.ejs');
+	    	}); 
+		} else
+			res.render('error.ejs');
 	});
 });
 
@@ -153,9 +159,9 @@ function createItem(obj, callback) {
 function sendUploadEmail(item, callback) {
 	console.log(item);
 	var mailOptions = {
-	    from: 'UST marketplace <ustmarketplace@gmail.com>', // sender address
-	    to: item._source.owner + EMAIL_EXT, // list of receivers
-	    subject: '✔ You successfully posted an item!', // Subject line
+	    from: 'UST marketplace <ustmarketplace@gmail.com>',
+	    to: item._source.owner,
+	    subject: '✔ You successfully posted an item!',
 	    html: '<p>Hey, just letting you know that you successfully posted the following item:</p>' +
 	    	  '<p>Item name: ' + item._source.name + '</p>' +
 	    	  '<p>Item description:' + item._source.description + '</p>' +
@@ -169,8 +175,7 @@ function sendUploadEmail(item, callback) {
 	    if(error) {
 	    	console.log('tommaso, error occurred here');
 	    	console.log('An error occurred');
-	    }
-	    else
+	    } else
 	    	callback();
 	});
 };
@@ -178,7 +183,7 @@ function sendUploadEmail(item, callback) {
 function sendMessageEmail(post, item, callback) {
 	var mailOptions = {
 	    from: 'ustmarketplace <tommaso.girotto91@gmail.com>', // sender address
-	    to: item._source.owner + EMAIL_EXT, // list of receivers
+	    to: item._source.owner, // list of receivers
 	    subject: '✔ Someone\'s interested in your post!', // Subject line
 	    html: '<p>Hey, someone would like to know more about:</p>' +
 	    	  '<p>Item name: ' + item._source.name + '</p>' +
@@ -188,7 +193,7 @@ function sendMessageEmail(post, item, callback) {
 	    	  '<p>' + post.author_itsc + ' writes:</p>' +
 	    	  '<p>' + post.content + '</p>' +
 	    	  '<br>' +
-	    	  '<p>To reply, send an email to: <a href="mailto:' + post.author_itsc + EMAIL_EXT + '">' + post.author_itsc + EMAIL_EXT + '</a></p>' +
+	    	  '<p>To reply, send an email to: <a href="mailto:' + post.author_itsc + '">' + post.author_itsc + EMAIL_EXT + '</a></p>' +
 	    	  '<br>' +
 	    	  '<p><a href="http://' + IP + ':3000/withdraw?_id=' + item._id + '">Withdraw item from marketplace</a></p>' +
 	    	  '<br>'
@@ -254,6 +259,15 @@ function getItemById(id, callback) {
 		else
 			callback(JSON.parse(body));
 	});
+};
+
+function authorise(email) {
+	var s = 'ust.hk';
+
+ 	if(email.indexOf(s) > -1)
+ 		return true;
+ 	else
+ 		return false;
 };
 
 /*******************************************************************************/
