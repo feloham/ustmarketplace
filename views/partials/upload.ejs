@@ -7,7 +7,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Upload</h4>
       </div>
-      <form role="form" method="post" action="/upload" enctype="multipart/form-data">
+      <form id="upload_form" role="form" method="post" action="/upload" enctype="multipart/form-data" onsubmit="return uploadValidation()">
           <div class="modal-body">
             <div class="form-group">
               <input placeholder="Item name..." id="item_name" type="text" class="form-control" name="item_name" style="width: 100%; height: 100%; border-color: Transparent; resize:none; outline: none; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none;">

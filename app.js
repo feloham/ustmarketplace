@@ -45,7 +45,6 @@ app.get('/', function(req, res) {
 		if(array == null)
 			res.render('error.ejs');
 		else {
-			console.log(array);
 			res.render('index.ejs', {
 				items : array
 			});	
@@ -72,13 +71,14 @@ app.get('/unauthorised', function(req, res) {
 app.post('/message', function(req, res) {
 	if(authorise(req.body.author_itsc)) {
 		getItemById(req.body.item_id, function(item) {
-			console.log('item: ', item);
 			sendMessageEmail(req.body, item, function() {
 				res.json({data : 'ok'});
 			});
 		});
-	} else
-		res.render('error.ejs');
+	} else {
+		console.log('unauthorised');
+		res.json({data : 'unauthorised'});
+	}
 });
 
 app.post('/upload', function(req, response) {
@@ -130,7 +130,6 @@ app.post('/upload', function(req, response) {
 });
 
 app.get('/withdraw', function(req, res) {
-	console.log(req.query);
 	client.update({
 	  index: INDEX,
 	  type: TYPE,
@@ -161,7 +160,6 @@ function createItem(obj, callback) {
 
 
 function sendUploadEmail(item, callback) {
-	console.log(item);
 	var mailOptions = {
 	    from: 'UST marketplace <ustmarketplace@gmail.com>',
 	    to: item._source.owner,
@@ -176,10 +174,9 @@ function sendUploadEmail(item, callback) {
 	};
 
 	transporter.sendMail(mailOptions, function(error, info) {
-	    if(error) {
-	    	console.log('tommaso, error occurred here');
+	    if(error)
 	    	console.log('An error occurred');
-	    } else
+	    else
 	    	callback();
 	});
 };

@@ -12,6 +12,58 @@
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 <script type="text/javascript">$('a[data-toggle=popover]').popover();</script>
+<script type="text/javascript">
+	function messageValidation() {
+		var content = document.forms["message_form"]["content"].value;
+		var author = document.forms["message_form"]["author_itsc"].value;
+
+	    if(content == null || content == "") {
+	        alert("The message must have some content");
+	        return false;
+	    }
+
+	   	if(author == null || author == "") {
+	        alert("The message must have an author");
+	        return false;
+	    }
+
+	    return true;
+	};
+
+	function uploadValidation() {
+		var item_name = document.forms["upload_form"]["item_name"].value;
+		var item_description = document.forms["upload_form"]["item_description"].value;
+		var item_price = document.forms["upload_form"]["item_price"].value;
+		var item_owner = document.forms["upload_form"]["item_owner"].value;
+
+	    if(item_name == null || item_name == "") {
+	        alert("The item must have a name");
+	        return false;
+	    }
+
+	   	if(item_description == null || item_description == "") {
+	        alert("The item must have a description");
+	        return false;
+	    }
+
+	    if(item_price == null || item_price == "") {
+	        alert("The item must have a price");
+	        return false;
+	    }
+
+	   	if(item_owner == null || item_owner == "") {
+	        alert("The item must have an owner");
+	        return false;
+	    }
+
+	    if(!/(\.bmp|\.gif|\.jpg|\.jpeg)$/i.test(document.forms["upload_form"]["item_image"].value)) {
+			alert("The upload form must have a proper image");
+			return false;
+		}
+
+	    return true;
+	};
+</script>
 <style>
     body    { padding-top:50px; }
     .footer {
