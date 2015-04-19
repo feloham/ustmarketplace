@@ -65,6 +65,10 @@ app.get('/error', function(req, res) {
 	res.render('error.ejs');
 });
 
+app.get('/unauthorised', function(req, res) {
+	res.render('unauthorised.ejs');
+});
+
 app.post('/message', function(req, res) {
 	if(authorise(req.body.author_itsc)) {
 		getItemById(req.body.item_id, function(item) {
@@ -77,7 +81,7 @@ app.post('/message', function(req, res) {
 		res.render('error.ejs');
 });
 
-app.post('/upload', function(req, res) {
+app.post('/upload', function(req, response) {
 	var item_name,
 		item_description,
 		item_price,
@@ -113,15 +117,15 @@ app.post('/upload', function(req, res) {
 				    fstream.on('close', function() {
 				    	getItemById(obj._id, function(obj) {
 				    		sendUploadEmail(obj, function() {
-					    		res.redirect('/');
+					    		response.redirect('/');
 					    	});
 				    	});
 				    });
 	    		} else
-	    			res.render('error.ejs');
+	    			response.redirect('error.ejs');
 	    	}); 
 		} else
-			res.render('error.ejs');
+			response.redirect('/unauthorised');
 	});
 });
 
