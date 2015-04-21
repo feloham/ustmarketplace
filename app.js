@@ -193,7 +193,7 @@ function sendMessageEmail(post, item, callback) {
 	    	  '<p>' + post.author_itsc + ' writes:</p>' +
 	    	  '<p>' + post.content + '</p>' +
 	    	  '<br>' +
-	    	  '<p>To reply, send an email to: <a href="mailto:' + post.author_itsc + '">' + post.author_itsc + EMAIL_EXT + '</a></p>' +
+	    	  '<p>To reply, send an email to: <a href="mailto:' + post.author_itsc + '">' + post.author_itsc + '</a></p>' +
 	    	  '<br>' +
 	    	  '<p><a href="http://' + IP + '/withdraw?_id=' + item._id + '">Withdraw item from marketplace</a></p>' +
 	    	  '<br>'
