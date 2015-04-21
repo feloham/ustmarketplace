@@ -52,20 +52,20 @@ app.get('/', function(req, res) {
 	});
 });
 
-app.get('/about', function(req, res) {
-	res.render('about.ejs');
-});
-
-app.get('/contact', function(req, res) {
-	res.render('contact.ejs');
-});
-
 app.get('/error', function(req, res) {
 	res.render('error.ejs');
 });
 
 app.get('/unauthorised', function(req, res) {
 	res.render('unauthorised.ejs');
+});
+
+app.get('/about', function(req, res) {
+	res.render('about.ejs');
+});
+
+app.get('/contact', function(req, res) {
+	res.render('contact.ejs');
 });
 
 app.post('/message', function(req, res) {
@@ -75,13 +75,11 @@ app.post('/message', function(req, res) {
 				res.json({data : 'ok'});
 			});
 		});
-	} else {
-		console.log('unauthorised');
+	} else
 		res.json({data : 'unauthorised'});
-	}
 });
 
-app.post('/upload', function(req, response) {
+app.post('/upload', function(req, res) {
 	var item_name,
 		item_description,
 		item_price,
@@ -97,35 +95,36 @@ app.post('/upload', function(req, response) {
 	      	item_description = val;
 	  	if(fieldname == 'item_image')
 	    	item_image = val;
-	    if(fieldname == 'item_owner')
+	    if(fieldname == 'item_owner') {
 	    	item_owner = val;
-	  });
 
-	req.busboy.on('file', function (fieldname, file, filename) {
-		if(authorise(item_owner)) {
-			createItem({
-	    		name: item_name,
-	    		price: item_price,
-	    		description: item_description,
-	    		date: Math.floor(new Date().getTime() / 1000),
-	    		owner: item_owner,
-	    		active: 'true'
-	    	}, function(err, obj) {
-	    		if(err == null) {
-	    			fstream = fs.createWriteStream(__dirname + '/public/img/' + obj._id + '.jpg');
-				    file.pipe(fstream);
-				    fstream.on('close', function() {
-				    	getItemById(obj._id, function(obj) {
-				    		sendUploadEmail(obj, function() {
-					    		response.redirect('/');
-					    	});
-				    	});
-				    });
-	    		} else
-	    			response.redirect('error.ejs');
-	    	}); 
-		} else
-			response.redirect('/unauthorised');
+	    	if(authorise(item_owner)) {
+				req.busboy.on('file', function (fieldname, file, filename) {
+					createItem({
+			    		name: item_name,
+			    		price: item_price,
+			    		description: item_description,
+			    		date: Math.floor(new Date().getTime() / 1000),
+			    		owner: item_owner,
+			    		active: 'true'
+			    	}, function(err, obj) {
+			    		if(err == null) {
+			    			fstream = fs.createWriteStream(__dirname + '/public/img/' + obj._id + '.jpg');
+						    file.pipe(fstream);
+						    fstream.on('close', function() {
+						    	getItemById(obj._id, function(obj) {
+						    		sendUploadEmail(obj, function() {
+							    		res.redirect('/');
+							    	});
+						    	});
+						    });
+			    		} else
+			    			res.redirect('/error');
+			    	}); 
+				});
+			} else
+				res.redirect('/unauthorised');
+	    }
 	});
 });
 
@@ -169,7 +168,7 @@ function sendUploadEmail(item, callback) {
 	    	  '<p>Item description:' + item._source.description + '</p>' +
 	    	  '<p>Item price: ' + item._source.price + '</p>' +
 	    	  '<br>' +
-	    	  '<p><a href="http://' + IP + ':3000/withdraw?_id=' + item._id + '">Withdraw item from marketplace</a></p>' +
+	    	  '<p><a href="http://' + IP + '/withdraw?_id=' + item._id + '">Withdraw item from marketplace</a></p>' +
 	    	  '<br>'
 	};
 
@@ -196,7 +195,7 @@ function sendMessageEmail(post, item, callback) {
 	    	  '<br>' +
 	    	  '<p>To reply, send an email to: <a href="mailto:' + post.author_itsc + '">' + post.author_itsc + EMAIL_EXT + '</a></p>' +
 	    	  '<br>' +
-	    	  '<p><a href="http://' + IP + ':3000/withdraw?_id=' + item._id + '">Withdraw item from marketplace</a></p>' +
+	    	  '<p><a href="http://' + IP + '/withdraw?_id=' + item._id + '">Withdraw item from marketplace</a></p>' +
 	    	  '<br>'
 	};
 
