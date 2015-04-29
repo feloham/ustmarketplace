@@ -46,8 +46,18 @@
 	        return false;
 	    }
 
+	    if(item_description.length > 50) {
+	        alert("The item description is too long");
+	        return false;
+	    }
+
 	    if(item_price == null || item_price == "") {
 	        alert("The item must have a price");
+	        return false;
+	    }
+
+	    if(isNaN(item_price)) {
+	        alert("The submitted price is not a number");
 	        return false;
 	    }
 
