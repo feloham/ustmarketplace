@@ -20,30 +20,29 @@
               <div class="row">
               <% if(items[i] != null) { %>
                   <div class="col-sm-6 col-md-3">
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                        <h3 class="panel-title"><%= items[i]._source.name%><span class="pull-right">$HK <%=items[i]._source.price%></span></h3>
-                      </div>
-                      <div class="panel-body text-center">
-                        <img src='/img/<%=items[i]._id%>.jpg'  style="width:200px; height:150px;">
-                        <hr/>
-                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message" data-id='<%=items[i]._id%>'>poke</button>
-                        </p>
+                    <div class="panel panel-default" data-toggle="modal" data-target="#message" data-id='<%=items[i]._id%>' style="cursor:pointer;">
+                        <div class="panel-heading">
+                          <h3 class="panel-title"><%= items[i]._source.name%><span class="pull-right">$HK <%=items[i]._source.price%></span></h3>
+                        </div>
+                        <div class="panel-body text-center">
+                          <img src='/img/<%=items[i]._id%>.jpg'  style="width:200px; height:150px;">
+                          <hr/>
+                          <p class="text-center"><%=items[i]._source.description%></p>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
                 <% } %>
                 <% if(items[i + 1] != null) { %>
                   <div class="col-sm-6 col-md-3">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#message" data-id='<%=items[i + 1]._id%>' style="cursor:pointer;">
                       <div class="panel-heading">
                         <h3 class="panel-title"><%= items[i + 1]._source.name%><span class="pull-right">$HK <%=items[i + 1]._source.price%></span></h3>
                       </div>
                       <div class="panel-body text-center">
                         <img src='/img/<%=items[i + 1]._id%>.jpg' style="width:200px; height:150px;">
                         <hr/>
-                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message" data-id='<%=items[i + 1]._id%>'>poke</button>
+                        <p class="text-center"><%=items[i + 1]._source.description%>
                         </p>
                       </div>
                     </div>
@@ -52,14 +51,14 @@
                 <% } %>
                 <% if(items[i + 2] != null) { %>
                   <div class="col-sm-6 col-md-3">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#message" data-id='<%=items[i + 2]._id%>' style="cursor:pointer;">
                       <div class="panel-heading">
                         <h3 class="panel-title"><%= items[i + 2]._source.name%><span class="pull-right">$HK <%=items[i + 2]._source.price%></span></h3>
                       </div>
                       <div class="panel-body text-center">
                         <img src='/img/<%=items[i + 2]._id%>.jpg' style="width:200px; height:150px;">
                         <hr/>
-                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message" data-id='<%=items[i + 2]._id%>'>poke</button>
+                        <p class="text-center"><%=items[i + 2]._source.description%>
                         </p>
                       </div>
                     </div>
@@ -68,14 +67,14 @@
                 <% } %>
                 <% if(items[i + 3] != null) { %>
                   <div class="col-sm-6 col-md-3">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default" data-toggle="modal" data-target="#message" data-id='<%=items[i + 3]._id%>' style="cursor:pointer;">
                       <div class="panel-heading">
                         <h3 class="panel-title"><%= items[i + 3]._source.name%><span class="pull-right">$HK <%=items[i + 3]._source.price%></span></h3>
                       </div>
                       <div class="panel-body text-center">
                         <img src='/img/<%=items[i + 3]._id%>.jpg' style="width:200px; height:150px;">
                         <hr/>
-                        <p class="text-center"><button href="#" class="btn btn-primary" data-toggle="modal" data-target="#message" data-id='<%=items[i + 3]._id%>'>poke</button>
+                        <p class="text-center"><%=items[i + 3]._source.description%>
                         </p>
                       </div>
                     </div>
