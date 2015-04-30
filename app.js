@@ -216,7 +216,7 @@ function getAllItems(callback) {
 		index: INDEX,
 		body: {
 			from : 0, 
-			size : 500,
+			size : 5000,
 	    	query: {
 		        filtered: {
 		            query: {
