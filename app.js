@@ -215,10 +215,10 @@ function getAllItems(callback) {
 	var obj = {
 		index: INDEX,
 		body: {
+			from : 0, 
+			size : 500,
 	    	query: {
 		        filtered: {
-		        	from : 0, 
-					size : 500,
 		            query: {
 		                match_all: {}
 		            },
