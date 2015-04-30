@@ -38,23 +38,21 @@
     event.preventDefault();
 
     if(uploadValidation()) {
-      var $form = $(this);
-      var values = {};
-      $.each($('#upload_form').serializeArray(), function(i, field) {
-        values[field.name] = field.value;
-      });
 
-      $.ajax({  
-        type: "POST",  
-        url: $form.attr('action'),  
-        dataType: 'json',
-        data:  values,
+      //
+      var formData = new FormData($(this)[0]);
+
+      $.ajax({
+        url: '/upload',
+        type: 'POST',
+        data: formData,
+        async: false,
         beforeSend: function() {
           document.getElementById('upload_button').disabled = true;
           var span = document.createElement('span');
           var i = document.createElement('i');
 
-          i.id = 'spinner';
+          i.id = 'upload_spinner';
           i.className = 'fa fa-cog fa-spin';
           span.style.textAlign = 'center';
           span.style.margin = 0;
@@ -64,16 +62,20 @@
         },
         complete: function() {
           document.getElementById('upload_button').disabled = false;
-          var spinner = document.getElementById('spinner');
+          var spinner = document.getElementById('upload_spinner');
           spinner.parentNode.removeChild(spinner);
 
           $('#upload').modal('hide');   
         },
-        success: function(obj) {
-          if(obj.data == 'unauthorised')
-            window.location="http://143.89.228.19:3000/unauthorised";
-        }
+        success: function(data) {
+            alert(data)
+        },
+        cache: false,
+        contentType: false,
+        processData: false
       });
+
+      return false;
     }
   });
 </script>
