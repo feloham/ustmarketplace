@@ -57,7 +57,7 @@
 	    }
 
 	    if(isNaN(item_price)) {
-	        alert("The submitted price is not a number");
+	        alert("The price you gave is not a number");
 	        return false;
 	    }
 
@@ -66,8 +66,8 @@
 	        return false;
 	    }
 
-	    if(!/(\.bmp|\.gif|\.jpg|\.jpeg)$/i.test(document.forms["upload_form"]["item_image"].value)) {
-			alert("The upload form must have a proper image");
+	    if(!/(\.jpg)$/i.test(document.forms["upload_form"]["item_image"].value)) {
+			alert("The image must be in .jpg format");
 			return false;
 		}
 

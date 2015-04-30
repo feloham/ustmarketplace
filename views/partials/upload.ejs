@@ -38,8 +38,6 @@
     event.preventDefault();
 
     if(uploadValidation()) {
-
-      //
       var formData = new FormData($(this)[0]);
 
       $.ajax({
@@ -48,6 +46,7 @@
         data: formData,
         async: false,
         beforeSend: function() {
+          console.log('before sending');
           document.getElementById('upload_button').disabled = true;
           var span = document.createElement('span');
           var i = document.createElement('i');
@@ -61,14 +60,15 @@
           document.getElementById('modal_footer').appendChild(i);
         },
         complete: function() {
-          document.getElementById('upload_button').disabled = false;
-          var spinner = document.getElementById('upload_spinner');
-          spinner.parentNode.removeChild(spinner);
-
-          $('#upload').modal('hide');   
+            console.log('completed function');
         },
         success: function(data) {
-            alert(data)
+            console.log('success');
+            document.getElementById('upload_button').disabled = false;
+            var spinner = document.getElementById('upload_spinner');
+            spinner.parentNode.removeChild(spinner);
+
+            $('#upload').modal('hide'); 
         },
         cache: false,
         contentType: false,
