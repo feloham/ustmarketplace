@@ -41,18 +41,28 @@
 	        return false;
 	    }
 
+	    if(item_name.length > 20) {
+	    	alert("The item name is too long");
+	        return false;
+	    }
+
 	   	if(item_description == null || item_description == "") {
 	        alert("The item must have a description");
 	        return false;
 	    }
 
-	    if(item_description.length > 50) {
+	    if(item_description.length > 100) {
 	        alert("The item description is too long");
 	        return false;
 	    }
 
 	    if(item_price == null || item_price == "") {
 	        alert("The item must have a price");
+	        return false;
+	    }
+
+	    if(item_price.length > 4) {
+	    	alert("The item price is too large");
 	        return false;
 	    }
 
