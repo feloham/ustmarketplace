@@ -217,6 +217,8 @@ function getAllItems(callback) {
 		body: {
 	    	query: {
 		        filtered: {
+		        	from : 0, 
+					size : 500,
 		            query: {
 		                match_all: {}
 		            },
